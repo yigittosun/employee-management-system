@@ -29,6 +29,11 @@ export class AppHeader extends LocalizeMixin(LitElement) {
       color: inherit;
       text-decoration: none;
     }
+    .title img {
+      height: 30px;
+      vertical-align: middle;
+      margin-right: 1rem;
+    }
     nav {
       display: inline-flex;
       align-items: center;
@@ -82,7 +87,6 @@ export class AppHeader extends LocalizeMixin(LitElement) {
 
   _renderLangButton() {
     const current = getLang();
-    // Bayrak: ŞU ANKİ dili göster
     const flag = current === 'tr' ? '🇹🇷' : '🇬🇧';
     const title =
       current === 'tr'
@@ -103,7 +107,9 @@ export class AppHeader extends LocalizeMixin(LitElement) {
   render() {
     return html`
       <div class="container">
-        <div class="title"><a href="/">ING</a></div>
+        <div class="title">
+          <img src="../../public/images/ing.webp" /><a href="/">ING</a>
+        </div>
         <nav>
           <a class="nav-link" href="/">
             <vaadin-icon
