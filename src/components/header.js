@@ -1,6 +1,8 @@
 import {LitElement, html, css} from 'lit';
+import {LocalizeMixin} from '../i18n/localize-mixin.js';
+import {getLang, setLang} from '../i18n/i18n.js';
 
-export class AppHeader extends LitElement {
+export class AppHeader extends LocalizeMixin(LitElement) {
   static styles = css`
     :host {
       display: block;
@@ -59,7 +61,44 @@ export class AppHeader extends LitElement {
       color: #fe7737;
       outline: none;
     }
+    .lang-btn {
+      margin-left: 0.5rem;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      line-height: 1;
+      font-size: 1.5em;
+      user-select: none;
+    }
   `;
+
+  _toggleLang() {
+    const current = getLang();
+    const next = current === 'tr' ? 'en' : 'tr';
+    document.documentElement.lang = next;
+    setLang(next);
+  }
+
+  _renderLangButton() {
+    const current = getLang();
+    // Bayrak: ŞU ANKİ dili göster
+    const flag = current === 'tr' ? '🇹🇷' : '🇬🇧';
+    const title =
+      current === 'tr'
+        ? this.t('header.switchToEnglish')
+        : this.t('header.switchToTurkish');
+    return html`
+      <button
+        class="lang-btn"
+        @click=${this._toggleLang}
+        title=${title}
+        aria-label=${title}
+      >
+        ${flag}
+      </button>
+    `;
+  }
 
   render() {
     return html`
@@ -71,12 +110,13 @@ export class AppHeader extends LitElement {
               icon="vaadin:users"
               aria-label="Employees"
             ></vaadin-icon>
-            <span>Employees</span>
+            <span>${this.t('header.employees')}</span>
           </a>
           <a class="nav-link add" href="/add">
             <vaadin-icon icon="vaadin:plus" aria-label="Add"></vaadin-icon>
-            <span>Add New</span>
+            <span>${this.t('header.addNew')}</span>
           </a>
+          ${this._renderLangButton()}
         </nav>
       </div>
     `;
