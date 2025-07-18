@@ -8,17 +8,18 @@
   "type": "module",
   "scripts": {
     "build": "echo \"This is not a TypeScript project, so no need to build.\"",
+    "dev": "web-dev-server --app-index index.html --node-resolve --watch",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint '**/*.js'",
     "lint:lit-analyzer": "lit-analyzer my-element.js",
     "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
     "serve": "wds --watch",
-    "test": "npm run test:dev && npm run test:prod",
+    "test": "web-test-runner --config web-test-runner.config.js --coverage",
     "test:dev": "wtr",
     "test:watch": "wtr --watch",
     "test:prod": "MODE=prod wtr",
     "test:prod:watch": "MODE=prod wtr --watch"
-    },
+  },
   "keywords": [
     "web-components",
     "lit-element",
@@ -29,6 +30,8 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "@vaadin/icons": "^24.8.3",
+    "@vaadin/router": "^2.0.0",
     "lit": "^3.2.0",
     "pwa-helpers": "^0.9.1",
     "redux": "^5.0.1"
@@ -36,13 +39,15 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",
     "@open-wc/testing": "^4.0.0",
-    "@web/dev-server": "^0.1.31",
+    "@web/dev-server": "^0.1.38",
     "@web/dev-server-legacy": "^1.0.0",
-    "@web/test-runner": "^0.15.0",
+    "@web/test-runner": "^0.15.3",
+    "@web/test-runner-commands": "^0.9.0",
     "@web/test-runner-playwright": "^0.9.0",
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "eslint": "^8.15.0",
     "lit-analyzer": "^1.2.1",
+    "playwright": "^1.54.1",
     "prettier": "^2.6.2"
   },
   "customElements": "custom-elements.json"
