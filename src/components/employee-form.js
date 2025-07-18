@@ -20,6 +20,7 @@ export class EmployeeForm extends LocalizeMixin(LitElement) {
     .field {
       display: flex;
       flex-direction: column;
+      width: 100%; 
     }
     label {
       font-size: 0.75rem;
@@ -70,6 +71,22 @@ export class EmployeeForm extends LocalizeMixin(LitElement) {
       margin-left: 2px;
       font-weight: bold;
       font-size: 1.1em;
+    }
+    @media (max-width: 900px) {
+      form {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .actions {
+        grid-column: span 2;
+      }
+    }
+    @media (max-width: 600px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+      .actions {
+        grid-column: span 1;
+      }
     }
   `;
 
