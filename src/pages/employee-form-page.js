@@ -1,25 +1,27 @@
-import { LitElement, html, css } from 'lit';
+import {LitElement, html, css} from 'lit';
+import {LocalizeMixin} from '../i18n/localize-mixin.js';
+import {store, addEmployee, updateEmployee} from '../store/index.js';
+import '../components/employee-form.js';
 
-class EmployeeFormPage extends LitElement {
-  static properties = {
-    employeeId: { type: String }
-  };
+export class EmployeeFormPage extends LocalizeMixin(LitElement) {
+  static properties = {employeeId: {type: String}, employee: {type: Object}};
 
   static styles = css`
     :host {
       display: block;
-      padding: 2rem 1rem;
+      padding: 2rem;
       box-sizing: border-box;
-      width: 100%;
     }
     .container {
-      max-width: 600px;
+      max-width: 1000px;
       margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-    h2 {
-      margin: 0 0 2rem 0;
-      font-size: 1.75rem;
-      font-weight: 600;
+    h3 {
+      margin: 0 0 1.5rem;
       color: #fe7737;
     }
   `;
@@ -27,15 +29,52 @@ class EmployeeFormPage extends LitElement {
   constructor() {
     super();
     this.employeeId = null;
+    this.employee = {
+      firstName: '',
+      lastName: '',
+      doe: '',
+      dob: '',
+      phone: '',
+      email: '',
+      department: '',
+      position: '',
+    };
+    this.unsubscribe = store.subscribe(() => this.requestUpdate());
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id) {
+      this.employeeId = id;
+      const found = store.getState().employees.find((e) => e.id === id);
+      if (found) this.employee = {...found};
+    }
+  }
+
+  disconnectedCallback() {
+    this.unsubscribe();
+    super.disconnectedCallback();
+  }
+
+  _handleSubmit(e) {
+    if (this.employeeId) store.dispatch(updateEmployee(e.detail));
+    else store.dispatch(addEmployee(e.detail));
+    window.location.href = '/';
   }
 
   render() {
-    const isEdit = this.employeeId !== null;
-    
+    const isEdit = !!this.employeeId;
     return html`
-      <div class="container">
-        <h2>${isEdit ? 'Edit Employee' : 'Add Employee'}</h2>
-        <p>Employee form will be here</p>
+      <div>
+        <h3>${isEdit ? this.t('form.titleEdit') : this.t('form.titleAdd')}</h3>
+        <div class="container">
+          <employee-form
+            .employee=${this.employee}
+            @submit=${this._handleSubmit}
+          ></employee-form>
+        </div>
       </div>
     `;
   }

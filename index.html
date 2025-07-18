@@ -21,6 +21,10 @@
   <app-header></app-header>
   <div id="outlet"></div>
 
+  <script>
+    window.process = { env: { NODE_ENV: 'development' } };
+  </script>
+
   <script type="module" src="./src/router/index.js"></script>
 </body>
 

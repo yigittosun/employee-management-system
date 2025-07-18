@@ -2,6 +2,7 @@ import {LitElement, html, css} from 'lit';
 import {LocalizeMixin} from '../i18n/localize-mixin.js';
 import '../components/employee-table.js';
 import '../components/employee-cards.js';
+import {store} from '../store/index.js';
 
 export class EmployeeListPage extends LocalizeMixin(LitElement) {
   static properties = {
@@ -67,6 +68,19 @@ export class EmployeeListPage extends LocalizeMixin(LitElement) {
     super();
     this.employees = [];
     this.viewMode = 'table';
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._unsubscribe = store.subscribe(() => {
+      this.employees = store.getState().employees;
+    });
+    this.employees = store.getState().employees;
+  }
+
+  disconnectedCallback() {
+    this._unsubscribe();
+    super.disconnectedCallback();
   }
 
   _setView(mode) {
