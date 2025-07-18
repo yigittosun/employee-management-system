@@ -3,6 +3,10 @@ import {LocalizeMixin} from '../i18n/localize-mixin.js';
 import {getLang, setLang} from '../i18n/i18n.js';
 
 export class AppHeader extends LocalizeMixin(LitElement) {
+  static properties = {
+     menuOpen: { type: Boolean, reflect: true },
+  };
+
   static styles = css`
     :host {
       display: block;
@@ -11,6 +15,7 @@ export class AppHeader extends LocalizeMixin(LitElement) {
       font-family: 'Quicksand', sans-serif;
     }
     .container {
+      position: relative;           
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -72,9 +77,47 @@ export class AppHeader extends LocalizeMixin(LitElement) {
       cursor: pointer;
       line-height: 1;
       font-size: 1.5em;
+      cursor: pointer;
       user-select: none;
     }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #fe7737;
+    }
+
+    @media (max-width: 600px) {
+      .menu-toggle {
+        display: inline-flex;
+      }
+      .nav-items {
+        display: none;
+      }
+     .nav-items.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 1rem;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem 1rem;
+        gap: 0.5rem;
+      }
+    }
   `;
+
+  constructor() {
+    super();
+    this.menuOpen = false;
+  }
+
+  _toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
 
   _toggleLang() {
     const current = getLang();
@@ -103,25 +146,36 @@ export class AppHeader extends LocalizeMixin(LitElement) {
   }
 
   render() {
+    const t = this.t.bind(this);
+
     return html`
       <div class="container">
         <div class="title">
-          <img src="../../public/images/ing.webp" /><a href="/">ING</a>
+          <img src="../../public/images/ing.webp" alt="Logo" />
+          <a href="/">ING</a>
         </div>
-        <nav>
-          <a class="nav-link" href="/">
-            <vaadin-icon
-              icon="vaadin:users"
-              aria-label="Employees"
-            ></vaadin-icon>
-            <span>${this.t('header.employees')}</span>
-          </a>
-          <a class="nav-link add" href="/add">
-            <vaadin-icon icon="vaadin:plus" aria-label="Add"></vaadin-icon>
-            <span>${this.t('header.addNew')}</span>
-          </a>
-          ${this._renderLangButton()}
-        </nav>
+
+        <button
+          class="menu-toggle"
+          @click=${this._toggleMenu}
+          aria-label="Toggle menu"
+        >
+          ☰
+        </button>
+
+       <div class="nav-items ${this.menuOpen ? 'open' : ''}">
+          <nav>
+            <a class="nav-link" href="/">
+              <vaadin-icon icon="vaadin:users"></vaadin-icon>
+              <span>${t('header.employees')}</span>
+            </a>
+            <a class="nav-link add" href="/add">
+              <vaadin-icon icon="vaadin:plus"></vaadin-icon>
+              <span>${t('header.addNew')}</span>
+            </a>
+            ${this._renderLangButton()}
+          </nav>
+        </div>
       </div>
     `;
   }
