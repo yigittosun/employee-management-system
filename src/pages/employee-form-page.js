@@ -44,12 +44,25 @@ export class EmployeeFormPage extends LocalizeMixin(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    if (id) {
-      this.employeeId = id;
-      const found = store.getState().employees.find((e) => e.id === id);
+    const match = window.location.pathname.match(/\/edit\/(.+)/);
+    if (match && match[1]) {
+      this.employeeId = match[1];
+      const found = store
+        .getState()
+        .employees.find((e) => e.id === this.employeeId);
       if (found) this.employee = {...found};
+    } else {
+      this.employeeId = null;
+      this.employee = {
+        firstName: '',
+        lastName: '',
+        doe: '',
+        dob: '',
+        phone: '',
+        email: '',
+        department: '',
+        position: '',
+      };
     }
   }
 

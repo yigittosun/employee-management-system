@@ -1,6 +1,6 @@
 import {LitElement, html, css} from 'lit';
 import {LocalizeMixin} from '../i18n/localize-mixin.js';
-
+import {Router} from '@vaadin/router';
 export class EmployeeCard extends LocalizeMixin(LitElement) {
   static properties = {
     employee: {type: Object},
@@ -85,13 +85,7 @@ export class EmployeeCard extends LocalizeMixin(LitElement) {
   }
 
   _edit() {
-    this.dispatchEvent(
-      new CustomEvent('edit', {
-        detail: this.employee.id,
-        bubbles: true,
-        composed: true,
-      })
-    );
+    Router.go(`/edit/${this.employee.id}`);
   }
 
   _delete() {
