@@ -36,6 +36,8 @@ export const translations = {
       select: 'Select',
       save: 'Save',
       cancel: 'Cancel',
+      required: 'This field is required',
+      invalidEmail: 'Invalid email address',
     },
   },
 
@@ -76,6 +78,8 @@ export const translations = {
       select: 'Seçiniz',
       save: 'Kaydet',
       cancel: 'İptal',
+      required: 'Bu alan zorunludur',
+      invalidEmail: 'Geçersiz e-posta adresi',
     },
   },
 };

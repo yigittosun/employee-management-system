@@ -2,7 +2,10 @@ import {LitElement, html, css} from 'lit';
 import {LocalizeMixin} from '../i18n/localize-mixin.js';
 
 export class EmployeeForm extends LocalizeMixin(LitElement) {
-  static properties = {employee: {type: Object}};
+  static properties = {
+    employee: {type: Object},
+    errors: {type: Object},
+  };
 
   static styles = css`
     :host {
@@ -31,6 +34,12 @@ export class EmployeeForm extends LocalizeMixin(LitElement) {
       border-radius: 4px;
       box-sizing: border-box;
     }
+    .error {
+      color: #ff792b;
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+      min-height: 1.2em;
+    }
     .actions {
       grid-column: span 3;
       display: flex;
@@ -56,6 +65,12 @@ export class EmployeeForm extends LocalizeMixin(LitElement) {
       font-size: 1rem;
       cursor: pointer;
     }
+    label .required {
+      color: #ff4d4f;
+      margin-left: 2px;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
   `;
 
   constructor() {
@@ -70,6 +85,7 @@ export class EmployeeForm extends LocalizeMixin(LitElement) {
       department: '',
       position: '',
     };
+    this.errors = {};
   }
 
   updated(changed) {
@@ -94,55 +110,85 @@ export class EmployeeForm extends LocalizeMixin(LitElement) {
   _onInput(e) {
     const field = e.target.name;
     this.employee = {...this.employee, [field]: e.target.value};
+    this.errors = {...this.errors, [field]: ''};
+  }
+
+  _validate() {
+    const errors = {};
+    const t = this.t.bind(this);
+    Object.entries(this.employee).forEach(([key, value]) => {
+      if (!value || value.trim() === '') {
+        errors[key] = t('form.required');
+      }
+    });
+    if (
+      this.employee.email &&
+      !/^[^@]+@[^@]+\.[^@]+$/.test(this.employee.email)
+    ) {
+      errors.email = t('form.invalidEmail');
+    }
+    return errors;
   }
 
   _onSubmit(e) {
     e.preventDefault();
-    const detail = {...this.employee};
-    this.dispatchEvent(
-      new CustomEvent('submit', {
-        detail,
-        bubbles: true,
-        composed: true,
-      })
-    );
+    const errors = this._validate();
+    this.errors = errors;
+    if (Object.keys(errors).length === 0) {
+      this.dispatchEvent(
+        new CustomEvent('submit', {
+          detail: {...this.employee},
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
   }
 
   render() {
     const t = this.t.bind(this);
+    const err = this.errors;
     return html`
-      <form @submit=${this._onSubmit}>
+      <form @submit=${this._onSubmit} novalidate>
         <div class="field">
-          <label>${t('form.firstName')}</label>
+          <label>${t('form.firstName')} <span class="required">*</span></label>
+
           <input name="firstName" @input=${this._onInput} required />
+          <div class="error">${err.firstName || ''}</div>
         </div>
         <div class="field">
-          <label>${t('form.lastName')}</label>
+          <label>${t('form.lastName')} <span class="required">*</span></label>
           <input name="lastName" @input=${this._onInput} required />
+          <div class="error">${err.lastName || ''}</div>
         </div>
         <div class="field">
-          <label>${t('form.doe')}</label>
-          <input type="date" name="doe" @input=${this._onInput} />
+          <label>${t('form.doe')} <span class="required">*</span></label>
+          <input type="date" name="doe" @input=${this._onInput} required />
+          <div class="error">${err.doe || ''}</div>
         </div>
         <div class="field">
-          <label>${t('form.dob')}</label>
-          <input type="date" name="dob" @input=${this._onInput} />
+          <label>${t('form.dob')} <span class="required">*</span></label>
+          <input type="date" name="dob" @input=${this._onInput} required />
+          <div class="error">${err.dob || ''}</div>
         </div>
         <div class="field">
-          <label>${t('form.phone')}</label>
-          <input name="phone" @input=${this._onInput} />
+          <label>${t('form.phone')} <span class="required">*</span></label>
+          <input name="phone" @input=${this._onInput} required />
+          <div class="error">${err.phone || ''}</div>
         </div>
         <div class="field">
-          <label>${t('form.email')}</label>
-          <input type="email" name="email" @input=${this._onInput} />
+          <label>${t('form.email')} <span class="required">*</span></label>
+          <input type="email" name="email" @input=${this._onInput} required />
+          <div class="error">${err.email || ''}</div>
         </div>
         <div class="field">
-          <label>${t('form.department')}</label>
-          <input name="department" @input=${this._onInput} />
+          <label>${t('form.department')} <span class="required">*</span></label>
+          <input name="department" @input=${this._onInput} required />
+          <div class="error">${err.department || ''}</div>
         </div>
         <div class="field">
-          <label>${t('form.position')}</label>
-          <select name="position" @input=${this._onInput}>
+          <label>${t('form.position')} <span class="required">*</span></label>
+          <select name="position" @change=${this._onInput} required>
             <option value="">${t('form.select')}</option>
             <option>Developer</option>
             <option>Manager</option>
@@ -150,6 +196,7 @@ export class EmployeeForm extends LocalizeMixin(LitElement) {
             <option>QA Engineer</option>
             <option>DevOps Engineer</option>
           </select>
+          <div class="error">${err.position || ''}</div>
         </div>
         <div class="actions">
           <button type="submit" class="save">${t('form.save')}</button>
