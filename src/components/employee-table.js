@@ -101,6 +101,7 @@ export class EmployeeTable extends LocalizeMixin(LitElement) {
 
   _onDialogProceed(e) {
     store.dispatch(deleteEmployee(e.detail.id));
+    document.getElementById('toast')?.show(this.t('toast.deleted'));
     this._deleteDialogOpen = false;
     this._employeeToDelete = null;
   }

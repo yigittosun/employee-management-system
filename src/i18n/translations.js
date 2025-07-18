@@ -45,6 +45,11 @@ export const translations = {
       proceed: 'Proceed',
       cancel: 'Cancel',
     },
+    toast: {
+      added: 'Employee added!',
+      updated: 'Employee updated!',
+      deleted: 'Employee deleted!',
+    },
   },
 
   tr: {
@@ -92,6 +97,11 @@ export const translations = {
       desc: 'Seçilen {{name}} çalışan kaydı silinecek',
       proceed: 'Onayla',
       cancel: 'İptal',
+    },
+    toast: {
+      added: 'Çalışan eklendi!',
+      updated: 'Çalışan güncellendi!',
+      deleted: 'Çalışan silindi!',
     },
   },
 };

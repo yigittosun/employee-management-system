@@ -2,6 +2,7 @@ import {LitElement, html, css} from 'lit';
 import {LocalizeMixin} from '../i18n/localize-mixin.js';
 import {store, addEmployee, updateEmployee} from '../store/index.js';
 import '../components/employee-form.js';
+import {Router} from '@vaadin/router';
 
 export class EmployeeFormPage extends LocalizeMixin(LitElement) {
   static properties = {employeeId: {type: String}, employee: {type: Object}};
@@ -72,9 +73,14 @@ export class EmployeeFormPage extends LocalizeMixin(LitElement) {
   }
 
   _handleSubmit(e) {
-    if (this.employeeId) store.dispatch(updateEmployee(e.detail));
-    else store.dispatch(addEmployee(e.detail));
-    window.location.href = '/';
+    if (this.employeeId) {
+      store.dispatch(updateEmployee(e.detail));
+      document.getElementById('toast')?.show(this.t('toast.updated'));
+    } else {
+      store.dispatch(addEmployee(e.detail));
+      document.getElementById('toast')?.show(this.t('toast.added'));
+    }
+    Router.go('/');
   }
 
   render() {
