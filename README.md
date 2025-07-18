@@ -107,5 +107,6 @@ A web-based Employee Management System built with modern Web Components using Li
 * Coverage report generated in `coverage/` folder
 
 
-
+## Testing Coverage
+<img width="821" height="278" alt="Image" src="https://github.com/user-attachments/assets/52c16508-6f73-4808-8141-b2fbd3c78444" />
 
