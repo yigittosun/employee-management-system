@@ -6,9 +6,20 @@ export const translations = {
     },
     list: {
       title: 'Employee List',
-      empty: 'No employees found.',
+      empty: 'No employees found',
       edit: 'Edit',
       delete: 'Delete',
+      table: 'Table view',
+      cards: 'Card view',
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      doe: 'Date of Employment',
+      dob: 'Date of Birth',
+      phone: 'Phone',
+      email: 'Email',
+      department: 'Department',
+      position: 'Position',
+      actions: 'Actions',
     },
     form: {
       titleAdd: 'Add Employee',
@@ -17,7 +28,7 @@ export const translations = {
       position: 'Position',
       save: 'Save',
       cancel: 'Cancel',
-    }
+    },
   },
 
   tr: {
@@ -27,9 +38,20 @@ export const translations = {
     },
     list: {
       title: 'Çalışan Listesi',
-      empty: 'Çalışan bulunamadı.',
+      empty: 'Çalışan bulunamadı',
       edit: 'Düzenle',
       delete: 'Sil',
+      table: 'Tablo görünümü',
+      cards: 'Kart görünümü',
+      firstName: 'Adı',
+      lastName: 'Soyadı',
+      doe: 'İşe Başlama',
+      dob: 'Doğum Tarihi',
+      phone: 'Telefon',
+      email: 'E-posta',
+      department: 'Departman',
+      position: 'Pozisyon',
+      actions: 'İşlemler',
     },
     form: {
       titleAdd: 'Çalışan Ekle',
@@ -38,6 +60,6 @@ export const translations = {
       position: 'Pozisyonu',
       save: 'Kaydet',
       cancel: 'İptal',
-    }
-  }
+    },
+  },
 };

@@ -1,20 +1,44 @@
-import { Router } from '@vaadin/router';
-import '@vaadin/icons';
+import {Router} from '@vaadin/router';
+import '@vaadin/icons/vaadin-icons.js';
 import '@vaadin/icon/vaadin-icon.js';
 
-import '../components/header.js';
-import '../components/employee-list.js';
-import '../components/employee-item.js';
-import '../components/employee-form.js';
-
+import '../layout.js';
 import '../pages/employee-list-page.js';
 import '../pages/employee-form-page.js';
 
-const outlet = document.getElementById('outlet');
-const router = new Router(outlet);
+window.addEventListener('DOMContentLoaded', () => {
+  const outlet = document.getElementById('outlet');
+  if (!outlet) {
+    console.error('Router outlet not found!');
+    return;
+  }
 
-router.setRoutes([
-  { path: '/', component: 'employee-list-page' },
-  { path: '/add', component: 'employee-form-page' },
-  { path: '/edit/:id', component: 'employee-form-page' },
-]);
+  try {
+    const router = new Router(outlet);
+    router.setRoutes([
+      {
+        path: '/',
+        component: 'employee-list-page',
+        action: (context, commands) => {
+          return commands.component('employee-list-page');
+        },
+      },
+      {
+        path: '/add',
+        component: 'employee-form-page',
+        action: (context, commands) => {
+          return commands.component('employee-form-page');
+        },
+      },
+      {
+        path: '/edit/:id',
+        component: 'employee-form-page',
+        action: (context, commands) => {
+          return commands.component('employee-form-page');
+        },
+      },
+    ]);
+  } catch (error) {
+    console.error('Router initialization error:', error);
+  }
+});

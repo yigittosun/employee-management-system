@@ -11,8 +11,6 @@ export class AppHeader extends LocalizeMixin(LitElement) {
       font-family: 'Quicksand', sans-serif;
     }
     .container {
-      max-width: 1200px;
-      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
