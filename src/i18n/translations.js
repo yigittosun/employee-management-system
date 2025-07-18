@@ -39,6 +39,12 @@ export const translations = {
       required: 'This field is required',
       invalidEmail: 'Invalid email address',
     },
+    dialog: {
+      title: 'Are you sure?',
+      desc: 'Selected Employee record of {{name}} will be deleted',
+      proceed: 'Proceed',
+      cancel: 'Cancel',
+    },
   },
 
   tr: {
@@ -80,6 +86,12 @@ export const translations = {
       cancel: 'İptal',
       required: 'Bu alan zorunludur',
       invalidEmail: 'Geçersiz e-posta adresi',
+    },
+    dialog: {
+      title: 'Emin misiniz?',
+      desc: 'Seçilen {{name}} çalışan kaydı silinecek',
+      proceed: 'Onayla',
+      cancel: 'İptal',
     },
   },
 };

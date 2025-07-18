@@ -1,10 +1,14 @@
 import {LitElement, html, css} from 'lit';
 import {LocalizeMixin} from '../i18n/localize-mixin.js';
 import {Router} from '@vaadin/router';
+import {store, deleteEmployee} from '../store/index.js';
+import '../components/confirm-dialog.js';
 
 export class EmployeeTable extends LocalizeMixin(LitElement) {
   static properties = {
     employees: {type: Array},
+    _deleteDialogOpen: {type: Boolean},
+    _employeeToDelete: {type: Object},
   };
 
   static styles = css`
@@ -69,6 +73,8 @@ export class EmployeeTable extends LocalizeMixin(LitElement) {
   constructor() {
     super();
     this.employees = [];
+    this._deleteDialogOpen = false;
+    this._employeeToDelete = null;
   }
 
   _toggleAll(e) {
@@ -83,9 +89,20 @@ export class EmployeeTable extends LocalizeMixin(LitElement) {
   }
 
   _delete(id) {
-    this.dispatchEvent(
-      new CustomEvent('delete', {detail: id, bubbles: true, composed: true})
-    );
+    const emp = this.employees.find((e) => e.id === id);
+    this._employeeToDelete = emp;
+    this._deleteDialogOpen = true;
+  }
+
+  _onDialogCancel() {
+    this._deleteDialogOpen = false;
+    this._employeeToDelete = null;
+  }
+
+  _onDialogProceed(e) {
+    store.dispatch(deleteEmployee(e.detail.id));
+    this._deleteDialogOpen = false;
+    this._employeeToDelete = null;
   }
 
   render() {
@@ -146,6 +163,13 @@ export class EmployeeTable extends LocalizeMixin(LitElement) {
           </tbody>
         </table>
       </div>
+
+      <confirm-dialog
+        .open=${this._deleteDialogOpen}
+        .employee=${this._employeeToDelete}
+        @cancel=${this._onDialogCancel}
+        @proceed=${this._onDialogProceed}
+      ></confirm-dialog>
     `;
   }
 }
