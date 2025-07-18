@@ -7,7 +7,7 @@ const employeesSlice = createSlice({
   initialState: persisted,
   reducers: {
     addEmployee: (state, action) => {
-      state.push({...action.payload, id: Date.now().toString()});
+      state.unshift({...action.payload, id: Date.now().toString()});
     },
     updateEmployee: (state, action) => {
       const idx = state.findIndex((emp) => emp.id === action.payload.id);
