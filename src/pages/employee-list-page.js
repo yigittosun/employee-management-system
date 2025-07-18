@@ -103,15 +103,16 @@ export class EmployeeListPage extends LocalizeMixin(LitElement) {
         </div>
       </div>
 
-   <div class="content-wrap">
+      <div class="content-wrap">
         ${isTable
           ? hasData
-            ? html`<employee-table .employees=${this.employees}></employee-table>`
+            ? html`<employee-table
+                .employees=${this.employees}
+              ></employee-table>`
             : html`<div class="empty">${this.t('list.empty')}</div>`
           : hasData
-            ? html`<employee-cards .employees=${this.employees}></employee-cards>`
-            : html`<div class="empty">${this.t('list.empty')}</div>`
-        }
+          ? html`<employee-cards .employees=${this.employees}></employee-cards>`
+          : html`<div class="empty">${this.t('list.empty')}</div>`}
       </div>
     `;
   }
