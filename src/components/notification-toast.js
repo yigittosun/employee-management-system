@@ -53,10 +53,18 @@ export class NotificationToast extends LitElement {
   show(msg = '', duration = 2400) {
     this.message = msg;
     this.open = true;
+    this.dispatchEvent(new CustomEvent('opened'));
     clearTimeout(this._timer);
     this._timer = setTimeout(() => {
       this.open = false;
+      this.dispatchEvent(new CustomEvent('closed'));
     }, duration);
+  }
+
+  hide() {
+    clearTimeout(this._timer);
+    this.open = false;
+    this.dispatchEvent(new CustomEvent('closed'));
   }
 
   render() {

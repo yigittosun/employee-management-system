@@ -19,9 +19,17 @@
   },
   "overrides": [
     {
-      "files": ["rollup.config.js", "web-test-runner.config.js"],
+      "files": [
+        "rollup.config.js",
+        "web-test-runner.config.js",
+        "test/**/*.js"
+      ],
       "env": {
-        "node": true
+        "mocha": true,
+        "browser": true
+      },
+      "globals": {
+        "process": "readonly"
       }
     }
   ]

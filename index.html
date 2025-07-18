@@ -23,7 +23,12 @@
   <div id="outlet"></div>
 
   <script>
-    window.process = { env: { NODE_ENV: 'development' } };
+    window.process = {
+      env: {
+        NODE_ENV: window.location.search.includes('test') ? 'test' : 'development'
+      }
+    };
+    globalThis.process = window.process;
   </script>
 
   <script type="module" src="./src/router/index.js"></script>

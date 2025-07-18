@@ -14,7 +14,7 @@
     "lint:lit-analyzer": "lit-analyzer my-element.js",
     "format": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.eslintignore --write",
     "serve": "wds --watch",
-    "test": "npm run test:dev && npm run test:prod",
+    "test": "web-test-runner --config web-test-runner.config.js --coverage",
     "test:dev": "wtr",
     "test:watch": "wtr --watch",
     "test:prod": "MODE=prod wtr",
@@ -41,11 +41,13 @@
     "@open-wc/testing": "^4.0.0",
     "@web/dev-server": "^0.1.38",
     "@web/dev-server-legacy": "^1.0.0",
-    "@web/test-runner": "^0.15.0",
+    "@web/test-runner": "^0.15.3",
+    "@web/test-runner-commands": "^0.9.0",
     "@web/test-runner-playwright": "^0.9.0",
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "eslint": "^8.15.0",
     "lit-analyzer": "^1.2.1",
+    "playwright": "^1.54.1",
     "prettier": "^2.6.2"
   },
   "customElements": "custom-elements.json"
